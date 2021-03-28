@@ -24,13 +24,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (empty($email)) {
         $error_email = true;
     } else {
-        $error_email = !preg_match('/[a-zA-z]@\w\.[a-z]{1,3}/', $email);
+        $error_email = !preg_match('/^[a-zA-z]@\w\.[a-z]{1,3}$/', $email);
     }
     if (empty($password)) {
         $error_password = true;
     }
     else {
-        $error_password = !preg_match('/^[1-9]{4}/',$password);
+        $error_password = preg_match('/\A(?=\w{6,10}\z)(?=[^a-z]*[a-z])(?=(?:[^A-Z]*[A-Z]){3})(?=\D*\d).*/',$password);
     }
 }
 
