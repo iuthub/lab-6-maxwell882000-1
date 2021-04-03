@@ -10,12 +10,20 @@ $error_email = false;
 $match = "Not checked yet.";
 $password = "";
 $error_password = false;
-
+$username = "";
+$error_username = false;
+$confirm_password = "";
+$error_confirm_password = false;
+$date_of_birth = "";
+$error_data_of_birth = false;
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $name = $_POST["name"];
     $email = $_POST["email"];
     $password = $_POST['password'];
+    $username = $_POST['username'];
+    $confirm_password = $_POST['password_2'];
+    $date_of_birth = $_POST['birth'];
     if (empty($name)) {
         $error_name = true;
     } else {
@@ -31,6 +39,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     else {
         $error_password = preg_match('/\A(?=\w{6,10}\z)(?=[^a-z]*[a-z])(?=(?:[^A-Z]*[A-Z]){3})(?=\D*\d).*/',$password);
+    }
+    if (empty($confirm_password)) {
+        $error_confirm_password = true;
+    }
+    else {
+        $error_confirm_password = $password == $confirm_password;
+    }
+    if (empty($username)){
+        $username = true;
+    }
+    else {
+        $error_username = preg_match('/^\w{5,}$/',$username);
+    }
+    if (empty($date_of_birth)){
+        $error_data_of_birth = true;
+    }
+    else {
+        $error_data_of_birth = preg_match('/^[1-31]{2}\.[1-12]{2}\.\d{4}$/',$date_of_birth);
     }
 }
 
@@ -84,8 +110,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </dd>
 
         <dt>Username</dt>
-        <dd><input type="text" class="form-control " name="username" value="<?= $name ?>">
-            <div class="invalid-feedback text-danger" style="display: none">
+        <dd><input type="text" class="form-control " name="username" value="<?= $username ?>">
+            <div class="invalid-feedback text-danger"style=<?= $error_username ? "" : "display:none" ?>>
                 Please provide a valid city.
             </div>
         </dd>
@@ -93,21 +119,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <dt>Password</dt>
         <dd><input type="text" class="form-control " name="password" value="<?= $password ?>">
                 <div class="invalid-feedback text-danger" style=<?= $error_password ? "" : "display:none" ?>>
-                Please provide a valid city.
+                Please provide a valid password.
             </div>
         </dd>
 
         <dt>Confirm Password</dt>
-        <dd><input type="text" class="form-control " name="password_2" value="<?= $name ?>">
-            <div class="invalid-feedback text-danger" style="display: none">
-                Please provide a valid city.
+        <dd><input type="text" class="form-control " name="password_2" value="<?= $confirm_password ?>">
+            <div class="invalid-feedback text-danger" style=<?= $error_confirm_password ? "" : "display:none" ?>>
+                Passwords don`t matches
             </div>
         </dd>
 
         <dt>Date of Birth</dt>
-        <dd><input type="text" class="form-control " name="birth" value="<?= $name ?>">
-            <div class="invalid-feedback text-danger" style="display: none">
-                Please provide a valid city.
+        <dd><input type="text" class="form-control " name="birth" value="<?= $date_of_birth ?>">
+            <div class="invalid-feedback text-danger" style=<?= $error_data_of_birth ? "" : "display:none" ?>>
+                Please provide a valid date of birth.
             </div>
         </dd>
 
